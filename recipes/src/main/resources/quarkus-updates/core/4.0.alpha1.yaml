@@ -209,21 +209,6 @@ recipeList:
       newPropertyKey: quarkus.cache.redis.$1.expire-after-write
 
 #####
-# SmallRye property renames
-#####
----
-type: specs.openrewrite.org/v1beta/recipe
-name: io.quarkus.updates.core.quarkus40.SmallRyeConfigProperties
-displayName: Rename deprecated SmallRye configuration properties
-description: >-
-  Rename SmallRye configuration properties that were deprecated in Quarkus 3.x
-  and removed in Quarkus 4.0.
-recipeList:
-  - org.openrewrite.quarkus.ChangeQuarkusPropertyKey:
-      oldPropertyKey: quarkus\.smallrye-health\.enable
-      newPropertyKey: quarkus.smallrye-health.enabled
-
-#####
 # Kubernetes property renames
 #####
 ---
@@ -235,8 +220,11 @@ description: >-
   and removed in Quarkus 4.0.
 recipeList:
   - org.openrewrite.quarkus.ChangeQuarkusPropertyKey:
-      oldPropertyKey: quarkus\.kubernetes\.init-task\.image
-      newPropertyKey: quarkus.kubernetes.init-task-defaults.wait-for-container.image
+      oldPropertyKey: quarkus\.(kubernetes|openshift|knative)\.init-task-defaults\.image
+      newPropertyKey: quarkus.$1.init-task-defaults.wait-for-container.image
+  - org.openrewrite.quarkus.ChangeQuarkusPropertyKey:
+      oldPropertyKey: 'quarkus\.(kubernetes|openshift|knative)\.init-tasks\.("[^"]+"|[^."]+)\.image'
+      newPropertyKey: quarkus.$1.init-tasks.$2.wait-for-container.image
 
 #####
 # HTTP/SSL property renames
@@ -246,18 +234,18 @@ type: specs.openrewrite.org/v1beta/recipe
 name: io.quarkus.updates.core.quarkus40.HttpSslConfigProperties
 displayName: Rename deprecated HTTP SSL configuration properties
 description: >-
-  Rename HTTP SSL configuration properties that were deprecated in Quarkus 3.x
+  Rename HTTP and management interface SSL configuration properties that were deprecated in Quarkus 3.x
   and removed in Quarkus 4.0.
 recipeList:
   - org.openrewrite.quarkus.ChangeQuarkusPropertyKey:
-      oldPropertyKey: quarkus\.http\.ssl\.certificate\.key-store-key-alias
-      newPropertyKey: quarkus.http.ssl.certificate.key-store-alias
+      oldPropertyKey: quarkus\.(http|management)\.ssl\.certificate\.key-store-key-alias
+      newPropertyKey: quarkus.$1.ssl.certificate.key-store-alias
   - org.openrewrite.quarkus.ChangeQuarkusPropertyKey:
-      oldPropertyKey: quarkus\.http\.ssl\.certificate\.key-store-key-password
-      newPropertyKey: quarkus.http.ssl.certificate.key-store-alias-password
+      oldPropertyKey: quarkus\.(http|management)\.ssl\.certificate\.key-store-key-password
+      newPropertyKey: quarkus.$1.ssl.certificate.key-store-alias-password
   - org.openrewrite.quarkus.ChangeQuarkusPropertyKey:
-      oldPropertyKey: quarkus\.http\.ssl\.certificate\.key-store-key-password-key
-      newPropertyKey: quarkus.http.ssl.certificate.key-store-alias-password-key
+      oldPropertyKey: quarkus\.(http|management)\.ssl\.certificate\.key-store-key-password-key
+      newPropertyKey: quarkus.$1.ssl.certificate.key-store-alias-password-key
 
 #####
 # Keycloak Policy Enforcer property renames
